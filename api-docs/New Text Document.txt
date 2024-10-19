@@ -1,0 +1,218 @@
+### Template Files for Each Folder
+Below are the **template files** that you can use for your Domain-Driven Design (DDD) ASP.NET project structure. These files serve as placeholders or initial templates to help you start building the project. Each file includes essential boilerplate code to get started with DDD in ASP.NET Core.
+
+#### 1. `src/Application`
+- **Interfaces/IRepository.cs**:
+  ```csharp
+  namespace Application.Interfaces
+  {
+      public interface IRepository<T>
+      {
+          Task<T> GetByIdAsync(Guid id);
+          Task<IEnumerable<T>> ListAsync();
+          Task AddAsync(T entity);
+          Task UpdateAsync(T entity);
+          Task DeleteAsync(Guid id);
+      }
+  }
+  ```
+- **Services/BaseService.cs**:
+  ```csharp
+  namespace Application.Services
+  {
+      public class BaseService
+      {
+          // Base service logic common for all application services
+      }
+  }
+  ```
+- **UseCases/GetPatientDetails.cs**:
+  ```csharp
+  namespace Application.UseCases
+  {
+      public class GetPatientDetails
+      {
+          // Example use case implementation
+      }
+  }
+  ```
+
+#### 2. `src/Domain`
+- **Entities/Patient.cs**:
+  ```csharp
+  namespace Domain.Entities
+  {
+      public class Patient
+      {
+          public Guid Id { get; set; }
+          public string Name { get; set; }
+          public string Email { get; set; }
+          // Other domain-specific properties
+      }
+  }
+  ```
+- **ValueObjects/Address.cs**:
+  ```csharp
+  namespace Domain.ValueObjects
+  {
+      public class Address
+      {
+          public string Street { get; set; }
+          public string City { get; set; }
+          public string ZipCode { get; set; }
+          // Methods to enforce invariants and encapsulate logic
+      }
+  }
+  ```
+- **Events/PatientRegistered.cs**:
+  ```csharp
+  namespace Domain.Events
+  {
+      public class PatientRegistered
+      {
+          public Guid PatientId { get; set; }
+          public DateTime RegisteredAt { get; set; }
+      }
+  }
+  ```
+
+#### 3. `src/Infrastructure`
+- **Persistence/AppDbContext.cs**:
+  ```csharp
+  using Microsoft.EntityFrameworkCore;
+  using Domain.Entities;
+
+  namespace Infrastructure.Persistence
+  {
+      public class AppDbContext : DbContext
+      {
+          public DbSet<Patient> Patients { get; set; }
+          public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+      }
+  }
+  ```
+- **Repositories/PatientRepository.cs**:
+  ```csharp
+  using Application.Interfaces;
+  using Domain.Entities;
+
+  namespace Infrastructure.Repositories
+  {
+      public class PatientRepository : IRepository<Patient>
+      {
+          // Repository implementation here
+      }
+  }
+  ```
+
+#### 4. `src/WebApi`
+- **Controllers/PatientController.cs**:
+  ```csharp
+  using Microsoft.AspNetCore.Mvc;
+  using Application.UseCases;
+
+  namespace WebApi.Controllers
+  {
+      [ApiController]
+      [Route("api/[controller]")]
+      public class PatientController : ControllerBase
+      {
+          [HttpGet("{id}")]
+          public IActionResult GetPatientDetails(Guid id)
+          {
+              // Controller logic calling UseCases
+              return Ok();
+          }
+      }
+  }
+  ```
+- **DTOs/PatientDto.cs**:
+  ```csharp
+  namespace WebApi.DTOs
+  {
+      public class PatientDto
+      {
+          public Guid Id { get; set; }
+          public string Name { get; set; }
+          public string Email { get; set; }
+      }
+  }
+  ```
+
+#### 5. `tests/UnitTests`
+- **UnitTests/PatientServiceTests.cs**:
+  ```csharp
+  using Xunit;
+  using Application.Services;
+
+  namespace UnitTests
+  {
+      public class PatientServiceTests
+      {
+          [Fact]
+          public void Should_Create_Patient_Successfully()
+          {
+              // Arrange
+              // Act
+              // Assert
+          }
+      }
+  }
+  ```
+
+#### 6. `tests/IntegrationTests`
+- **IntegrationTests/PatientIntegrationTests.cs**:
+  ```csharp
+  using Xunit;
+  using System.Net.Http;
+
+  namespace IntegrationTests
+  {
+      public class PatientIntegrationTests
+      {
+          [Fact]
+          public void Should_Return_Patient_Details()
+          {
+              // Integration test logic here
+          }
+      }
+  }
+  ```
+
+### NuGet Packages Required
+To set up a **DDD Template** ASP.NET Core project, the following **NuGet packages** are commonly used to support clean architecture, DDD, and testing:
+
+1. **Microsoft.EntityFrameworkCore**: For ORM and database interaction.
+   ```xml
+   <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+   ```
+2. **Microsoft.EntityFrameworkCore.SqlServer**: For SQL Server integration.
+   ```xml
+   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+   ```
+3. **Microsoft.Extensions.DependencyInjection**: To set up dependency injection.
+   ```xml
+   <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+   ```
+4. **Microsoft.Extensions.Logging**: For logging purposes.
+   ```xml
+   <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+   ```
+5. **Swashbuckle.AspNetCore**: To generate Swagger API documentation.
+   ```xml
+   <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+   ```
+6. **xUnit**: For unit testing.
+   ```xml
+   <PackageReference Include="xunit" Version="2.4.1" />
+   ```
+7. **Moq**: For mocking dependencies in unit tests.
+   ```xml
+   <PackageReference Include="Moq" Version="4.16.1" />
+   ```
+8. **Microsoft.AspNetCore.Authentication.JwtBearer**: For JWT Authentication setup (if adding authentication).
+   ```xml
+   <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
+   ```
+
+These packages will provide a solid foundation for building the DDD-based ASP.NET Core application with a clean architecture and comprehensive test coverage.

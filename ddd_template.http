@@ -1,0 +1,6 @@
+@ddd_template_HostAddress = http://localhost:5084
+
+GET {{ddd_template_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
