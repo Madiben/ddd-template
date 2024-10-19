@@ -1,5 +1,5 @@
 ﻿# ddd_template
-
+```
 ddd-template/                     # Template Project for ASP.NET Core with DDD
 ├── README.md                      # Instructions for using the template
 ├── src/
@@ -23,7 +23,7 @@ ddd-template/                     # Template Project for ASP.NET Core with DDD
 ├── Dockerfile                     # Dockerfile for containerizing the template
 └── DDD-Template.csproj            # Project file
 
-
+```
 
 ### NuGet Packages Required
 To set up a **DDD Template** ASP.NET Core project, the following **NuGet packages** are commonly used to support clean architecture, DDD, and testing:
